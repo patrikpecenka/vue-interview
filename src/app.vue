@@ -8,10 +8,10 @@
 
 <script>
 import TodoForm from "./components/todo-form.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import TodoList from "./components/todo-list.vue";
-import { todosList } from "./todo-data";
 import TodoResults from './components/todo-results.vue';
+import { fetchData, saveData } from './composables/fetchData';
 
 export default defineComponent({
     name: "App",
@@ -23,11 +23,19 @@ export default defineComponent({
     },
 
     setup() {
-        const todos = ref(todosList);
+        const todos = ref([]);
+
+        onMounted(async () => {
+            todos.value = await fetchData();
+        });
 
         const handleTodosChanged = (newTodos) => {
             todos.value = newTodos;
         };
+
+        watch(todos, (newTodos) => {
+          saveData(newTodos);
+        })
 
         return {
             todos,

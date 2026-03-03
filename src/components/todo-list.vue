@@ -89,9 +89,11 @@ export default defineComponent({
 }
 
 .todo-list-content {
+    max-height: 700px;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .no-todos {

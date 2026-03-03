@@ -46,7 +46,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 400px;
+    width: 80%;
     margin: 0 auto 5px;
 }
 
