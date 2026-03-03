@@ -10,31 +10,19 @@
 </template>
 
 <script>
+import { useTodos } from '@/composables/useTodos';
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
     name: "TodoForm",
 
-    props: ["todos"],
-
-    emits: ["todos-changed"],
-
-    setup(props, { emit }) {
+    setup() {
+        const { addTodo } = useTodos();
         const task = ref("");
 
         const handleAddTodo = () => {
             if (task.value) {
-                emit("todos-changed", [
-                    ...props.todos,
-                    {
-                        id:
-                            props.todos.length > 0
-                                ? props.todos[props.todos.length - 1].id + 1
-                                : 0,
-                        label: task.value,
-                        checked: false,
-                    },
-                ]);
+                addTodo(task.value)
                 task.value = "";
             }
         };
