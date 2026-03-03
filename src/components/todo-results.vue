@@ -8,17 +8,13 @@
 
 <script>
 import { useCompletedTodos } from '@/composables/useCompletedTodos';
-import { defineComponent, toRef } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "TodoResults",
-    props: ["todos"],
 
-
-    setup(props) {
-      const todoList = toRef(props, "todos");
-
-      const { completedTodos } = useCompletedTodos(todoList)
+    setup() {
+      const { completedTodos } = useCompletedTodos()
 
       return {
         completedTodos

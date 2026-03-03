@@ -7,13 +7,13 @@
                 :key="todoItem.id"
                 :label="todoItem.label"
                 :checked="todoItem.checked"
-                @click="() => toggleCheck(todoItem.id)"
-                @delete="() => handleDelete(todoItem.id)"
+                @click="() => toggleTodo(todoItem.id)"
+                @delete="() => removeTodo(todoItem.id)"
                 @key-up="(e) => handleKeyUp(e, todoItem.id)"
             />
         </div>
         <div class="no-todos" v-else>
-          No todos yet
+            No todos yet
         </div>
     </div>
 </template>
@@ -22,50 +22,27 @@
 /* eslint-disable no-unused-vars */
 import { defineComponent } from "vue";
 import TodoCheckbox from "./todo-checkbox.vue";
+import { useTodos } from '@/composables/useTodos';
 
 export default defineComponent({
     name: "TodoList",
 
     components: { TodoCheckbox },
 
-    props: ["todos"],
-
-    emits: ["todos-changed"],
-
-    setup(props, { emit }) {
-        const toggleCheck = (id) => {
-            emit(
-                "todos-changed",
-                props.todos.map((el) => {
-                    if (el.id === id) {
-                        return {
-                            ...el,
-                            checked: !el.checked,
-                        };
-                    }
-
-                    return el;
-                })
-            );
-        };
-
-        const handleDelete = (id) => {
-          emit(
-            "todos-changed",
-            props.todos.filter((el) => el.id !== id)
-          )
-        };
+    setup() {
+        const { toggleTodo, todos, removeTodo } = useTodos();
 
         const handleKeyUp = (e, id) => {
             if (e.keyCode === 13) {
-                toggleCheck(id);
+                toggleTodo(id);
             }
         };
 
         return {
-            toggleCheck,
-            handleDelete,
-            handleKeyUp
+            toggleTodo,
+            removeTodo,
+            handleKeyUp,
+            todos
         };
     },
 });
